@@ -12,6 +12,7 @@ class Jogo extends StatefulWidget {
 class _JogoState extends State<Jogo> {
   var _imagemapp = const AssetImage("img/padrao.png");
   var _mensagem = "Faça sua Escolha";
+  var _result = "nao";
 
   void opcaoSelecionada(String opcaoUsuario) {
     var opcoes = const ["pedra", "papel", "tesoura"];
@@ -42,16 +43,19 @@ class _JogoState extends State<Jogo> {
         (opcaoUsuario == "papel" && opcaoApp == "pedra")) {
       setState(() {
         _mensagem = "Parabéns!! Você ganhou!";
+        _result = "ganhou";
       });
     } else if ((opcaoApp == "pedra" && opcaoUsuario == "tesoura") ||
         (opcaoApp == "tesoura" && opcaoUsuario == "papel") ||
         (opcaoApp == "papel" && opcaoUsuario == "pedra")) {
       setState(() {
         _mensagem = "Você perdeu :(";
+        _result = "perdeu";
       });
     } else {
       setState(() {
         _mensagem = "Empatou";
+        _result = "nao";
       });
     }
   }
@@ -66,7 +70,7 @@ class _JogoState extends State<Jogo> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Padding(
-            padding: EdgeInsets.fromLTRB(8, 20, 8, 15),
+            padding: EdgeInsets.fromLTRB(8, 20, 8, 20),
             child: Text(
               "Escolha do App",
               style: TextStyle(
@@ -80,13 +84,16 @@ class _JogoState extends State<Jogo> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
-            child: Text(
-              _mensagem,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child: Text(_mensagem,
+                style: TextStyle(
+                  fontSize: _result == "nao" ? 20 : 30,
+                  fontWeight: FontWeight.bold,
+                  color: _result == "nao"
+                      ? Colors.black
+                      : _result == "ganhou"
+                          ? Colors.green
+                          : Colors.red,
+                )),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
